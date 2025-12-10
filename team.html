@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PhishingNet — Team</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Meet the PhishingNet team - Developers and security experts behind the phishing detection project." />
+  <meta name="keywords" content="phishingnet team, developers, security experts, project team" />
+  <link rel="canonical" href="https://phishingnet.com/team.html" />
+  
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/png" href="phishing-icon.png" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <link rel="shortcut icon" href="logo.jpg" />
+  <meta name="theme-color" content="#ffb085" />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://phishingnet.com/team.html" />
+  <meta property="og:title" content="PhishingNet Team" />
+  <meta property="og:description" content="Meet the team behind PhishingNet." />
+  <meta property="og:image" content="https://phishingnet.com/logo.jpg" />
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo"><img src="logo.jpg" alt="PhishingNet Logo"></div>
+        <div>
+          <h2>PhishingNet</h2>
+          <div class="small" style="margin-top:4px;color:var(--muted)">Capstone Project</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="sidebar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="api.html">API</a>
+        <a href="setup.html">Setup</a>
+        <a href="team.html">Team</a>
+      </nav>
+      <div class="muted">Status: local • backend: <span id="sidebar-backend">unknown</span></div>
+    </aside>
+
+    <main class="main">
+      <div class="header-row">
+        <h1 class="page-title">Team</h1>
+        <div class="small">Contributors and contacts</div>
+      </div>
+
+      <section class="cards" aria-hidden="false">
+        <div class="card">
+          <h3>Member A</h3>
+          <div class="small">Role: Backend & Models</div>
+          <div class="small">Email: membera@example.com</div>
+        </div>
+        <div class="card">
+          <h3>Member B</h3>
+          <div class="small">Role: Extension & Frontend</div>
+          <div class="small">Email: memberb@example.com</div>
+        </div>
+        <div class="card">
+          <h3>Member C</h3>
+          <div class="small">Role: Data & Evaluation</div>
+          <div class="small">Email: memberc@example.com</div>
+        </div>
+      </section>
+
+      <section class="section card">
+        <h3>Contact</h3>
+        <p class="small">General inquiries: <a href="mailto:support@phishingnet.local">support@phishingnet.local</a></p>
+      </section>
+
+      <footer>© PhishingNet — Capstone Project</footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const backendStatusEl=document.getElementById('sidebar-backend');
+      async function checkBackend(){
+        try{const r=await fetch('http://localhost:5000/analyze',{method:'OPTIONS'}).catch(()=>null);
+          backendStatusEl.textContent=(r&&(r.ok||r.status===204))?'online':'offline';
+        }catch(e){backendStatusEl.textContent='offline'}
+      }
+      if(backendStatusEl){checkBackend();setInterval(checkBackend,8000);}  
+      document.addEventListener('DOMContentLoaded',()=>{
+        const links=document.querySelectorAll('.nav a');
+        const path=window.location.pathname.split('/').pop()||'index.html';
+        links.forEach(l=>{const href=l.getAttribute('href'); if(href===path) l.classList.add('active');});
+      });
+    })();
+  </script>
+</body>
+</html>

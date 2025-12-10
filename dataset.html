@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PhishingNet Dataset | Vault</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Browse PhishingNet dataset - Real-time phishing detection results, statistics, and analysis data." />
+  <meta name="keywords" content="phishing dataset, security data, phishing statistics, url analysis data" />
+  <link rel="canonical" href="https://phishingnet.com/dataset.html" />
+  
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/png" href="phishing-icon.png" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <link rel="shortcut icon" href="logo.jpg" />
+  <meta name="theme-color" content="#ffb085" />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://phishingnet.com/dataset.html" />
+  <meta property="og:title" content="PhishingNet Dataset" />
+  <meta property="og:description" content="Browse real-time phishing detection results and statistics." />
+  <meta property="og:image" content="https://phishingnet.com/logo.jpg" />
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Kaggle-style Dataset Page */
+    .dataset-header {
+      background: linear-gradient(135deg, #0a1428, #091a30);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .dataset-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .dataset-title-section {
+      flex: 1;
+    }
+    .dataset-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: var(--white);
+    }
+    .dataset-subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 0 0 12px 0;
+    }
+    .dataset-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .dataset-actions .btn {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+    .dataset-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      margin-top: 24px;
+    }
+    .dataset-tab {
+      padding: 12px 20px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s ease;
+    }
+    .dataset-tab:hover {
+      color: var(--white);
+    }
+    .dataset-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .dataset-content {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .dataset-main {
+      min-width: 0;
+    }
+    .dataset-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .metadata-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+    }
+    .metadata-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .metadata-item:last-child {
+      border-bottom: none;
+    }
+    .metadata-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .metadata-value {
+      color: var(--white);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tag {
+      background: rgba(255, 176, 133, 0.15);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      border: 1px solid transparent;
+    }
+    .tag:hover {
+      background: rgba(255, 176, 133, 0.25);
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+    .tag.active {
+      background: var(--accent);
+      color: var(--white);
+      border-color: var(--accent);
+    }
+    .tag-info {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      display: none;
+    }
+    .tag-info.show {
+      display: block;
+    }
+    .about-section {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .about-section h3 {
+      color: var(--accent);
+      font-size: 20px;
+      margin: 0 0 16px 0;
+    }
+    .about-section h4 {
+      color: var(--white);
+      font-size: 16px;
+      margin: 20px 0 8px 0;
+    }
+    .about-section p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 12px 0;
+    }
+    .file-explorer {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .file-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .file-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .file-size {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .preview-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 16px;
+    }
+    .preview-tab {
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+    .preview-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: visible;
+      margin-top: 16px;
+      border-radius: 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .table-container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+    .table-container::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 4px;
+    }
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-2);
+    }
+    .data-table {
+      width: 100%;
+      min-width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
+    .data-table th {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--accent);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      white-space: nowrap;
+      min-width: 120px;
+    }
+    .data-table th:first-child {
+      min-width: 200px; /* timestamp */
+    }
+    .data-table th:nth-child(2) {
+      min-width: 250px; /* url */
+    }
+    .data-table th:nth-child(6) {
+      min-width: 100px; /* phishing */
+    }
+    .data-table th:nth-child(7),
+    .data-table th:nth-child(8) {
+      min-width: 150px; /* title, text_preview */
+    }
+    .data-table td {
+      padding: 12px 16px;
+      color: var(--white);
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      white-space: nowrap;
+      min-width: 120px;
+    }
+    .data-table td:first-child {
+      min-width: 200px; /* timestamp */
+    }
+    .data-table td:nth-child(2) {
+      min-width: 250px; /* url */
+    }
+    .data-table td:nth-child(6) {
+      min-width: 100px; /* phishing */
+    }
+    .data-table td:nth-child(7),
+    .data-table td:nth-child(8) {
+      min-width: 150px; /* title, text_preview */
+    }
+    .data-table tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .histogram-bar {
+      height: 20px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 4px;
+      margin: 4px 0;
+      min-width: 20px;
+    }
+    .version-info {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 24px;
+    }
+    .version-info h4 {
+      color: var(--accent);
+      margin: 0 0 12px 0;
+      font-size: 16px;
+    }
+    .file-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .file-list li {
+      padding: 8px 0;
+      color: var(--muted);
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .file-list li:last-child {
+      border-bottom: none;
+    }
+    .summary-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 12px;
+    }
+    .summary-stat {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .summary-stat strong {
+      color: var(--white);
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+    .error-message {
+      background: rgba(255, 106, 106, 0.1);
+      border: 1px solid rgba(255, 106, 106, 0.3);
+      border-radius: 8px;
+      padding: 16px;
+      color: #ff6b6b;
+      margin: 20px 0;
+    }
+    @media (max-width: 980px) {
+      .dataset-content {
+        grid-template-columns: 1fr;
+      }
+      .dataset-sidebar {
+        order: -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo"><img src="logo.jpg" alt="PhishingNet Logo"></div>
+        <div>
+          <h2>PhishingNet</h2>
+          <div class="small" style="margin-top:4px;color:var(--muted)">Capstone Project</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="sidebar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="api.html">API</a>
+        <a href="setup.html">Setup</a>
+        <a href="dataset.html" class="active">Dataset</a>
+      </nav>
+
+      <div class="muted">Status: local • backend: <span id="sidebar-backend">unknown</span></div>
+    </aside>
+
+    <main class="main">
+      <div class="dataset-header">
+        <div class="dataset-header-top">
+          <div class="dataset-title-section">
+            <div style="color: var(--muted); font-size: 13px; margin-bottom: 8px;">PHISHINGNET — UPDATED <span id="last-update-time">RECENTLY</span></div>
+            <h1 class="dataset-title">Phishing Detection Dataset | Vault</h1>
+            <p class="dataset-subtitle">Comprehensive dataset of analyzed URLs with phishing risk scores, features, and classification results.</p>
+          </div>
+          <div class="dataset-actions">
+            <button id="download-btn" class="btn">📥 Download</button>
+            <span id="upvote-count" style="color: var(--muted); font-size: 14px; padding: 10px 0;">0</span>
+          </div>
+        </div>
+
+        <div class="dataset-tabs">
+          <button class="dataset-tab active" data-tab="data">Data Card</button>
+          <button class="dataset-tab" data-tab="code">Code</button>
+          <button class="dataset-tab" data-tab="discussion">Discussion</button>
+        </div>
+      </div>
+
+      <div class="dataset-content">
+        <div class="dataset-main">
+          <!-- Data Card Tab -->
+          <div id="data-tab" class="tab-content">
+            <div class="about-section">
+              <h3>About Dataset</h3>
+              <h4>PhishingNet Analysis Dataset</h4>
+              <p>
+                This dataset contains comprehensive analysis results from PhishingNet, an AI-powered phishing detection system. 
+                Each entry represents a URL that has been analyzed using URL heuristics and semantic analysis to produce a risk score.
+              </p>
+              <h4>Objective</h4>
+              <p>
+                The dataset is designed to help researchers and developers understand phishing patterns, train machine learning models, 
+                and improve phishing detection systems. Each analysis includes detailed URL features, risk scores, and classification results.
+              </p>
+              <h4>Dataset Format</h4>
+              <p>
+                <strong>Target Variable:</strong> <code>safe</code> (boolean: <strong>true = safe</strong>, <strong>false = phishing</strong>)<br>
+                <strong>Key Features:</strong> URL scores, semantic scores, combined risk scores, URL features (length, dots, HTTPS, etc.)<br>
+                <strong>Submission Format:</strong> CSV with columns: timestamp, url, url_score, semantic_score, combined_score, safe, and feature columns
+              </p>
+            </div>
+
+            <div class="file-explorer">
+              <div class="file-header">
+                <div>
+                  <div class="file-name">dataset.csv</div>
+                  <div class="file-size" id="file-size">Loading...</div>
+                </div>
+              </div>
+              <div class="preview-tabs">
+                <button class="preview-tab active" data-preview="detail">Detail</button>
+                <button class="preview-tab" data-preview="compact">Compact</button>
+                <button class="preview-tab" data-preview="column">Column</button>
+              </div>
+              <div id="file-description" style="color: var(--muted); font-size: 13px; margin-bottom: 16px;">
+                Complete dataset of all analyzed URLs with risk scores and features.
+              </div>
+              <div id="data-preview-container">
+                <div class="loading">Loading dataset preview...</div>
+              </div>
+            </div>
+
+            <div class="version-info">
+              <h4>Data Explorer</h4>
+              <div>
+                <strong style="color: var(--white);">Version:</strong> <span id="dataset-version">Version 1</span>
+              </div>
+              <ul class="file-list">
+                <li>dataset.csv</li>
+              </ul>
+              <div class="summary-stats">
+                <div class="summary-stat">
+                  <strong id="total-files">1</strong> file
+                </div>
+                <div class="summary-stat">
+                  <strong id="total-columns">16</strong> columns
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Tab -->
+          <div id="code-tab" class="tab-content" style="display: none;">
+            <div class="about-section">
+              <h3>Code Examples</h3>
+              <h4>Python - Load Dataset</h4>
+              <pre style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; overflow-x: auto; color: var(--white); font-size: 13px;"><code>import pandas as pd
+
+# Load the dataset
+df = pd.read_csv('dataset.csv')
+
+# View basic statistics
+print(df.describe())
+print(f"Total entries: {len(df)}")
+print(f"Phishing count: {df['phishing'].sum()}")
+print(f"Safe count: {(~df['phishing']).sum()}")</code></pre>
+
+              <h4>Python - Analyze with PhishingNet API</h4>
+              <pre style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; overflow-x: auto; color: var(--white); font-size: 13px;"><code>import requests
+
+# Analyze a URL
+response = requests.post('http://localhost:5000/analyze', json={
+    'url': 'https://example.com',
+    'text': 'Page content here',
+    'title': 'Page Title'
+})
+
+result = response.json()
+print(f"Risk Score: {result['score']}")
+print(f"Phishing: {result['phishing']}")</code></pre>
+            </div>
+          </div>
+
+          <!-- Discussion Tab -->
+          <div id="discussion-tab" class="tab-content" style="display: none;">
+            <div class="about-section">
+              <h3>Discussion</h3>
+              
+              <div style="margin-bottom: 32px;">
+                <h4 style="color: var(--accent); margin-top: 0;">Welcome to the PhishingNet Dataset Discussion</h4>
+                <p>This dataset contains real-world phishing detection results from the PhishingNet AI system. Use this space to share insights, ask questions, and discuss best practices for phishing detection.</p>
+              </div>
+
+              <div style="margin-bottom: 32px;">
+                <h4>💡 Common Use Cases</h4>
+                <ul style="color: var(--muted); line-height: 1.8; padding-left: 20px;">
+                  <li><strong style="color: var(--white);">Machine Learning Training:</strong> Use this dataset to train your own phishing detection models</li>
+                  <li><strong style="color: var(--white);">Research & Analysis:</strong> Study phishing patterns, URL characteristics, and detection strategies</li>
+                  <li><strong style="color: var(--white);">Model Validation:</strong> Compare your detection algorithms against PhishingNet's results</li>
+                  <li><strong style="color: var(--white);">Feature Engineering:</strong> Analyze which URL features are most indicative of phishing attempts</li>
+                  <li><strong style="color: var(--white);">Security Education:</strong> Learn about common phishing indicators and red flags</li>
+                </ul>
+              </div>
+
+              <div style="margin-bottom: 32px;">
+                <h4>📊 Understanding the Dataset</h4>
+                <p style="color: var(--muted); line-height: 1.8;">
+                  The dataset includes <strong style="color: var(--white);">risk scores</strong> from multiple detection methods:
+                </p>
+                <ul style="color: var(--muted); line-height: 1.8; padding-left: 20px;">
+                  <li><strong style="color: var(--white);">url_score:</strong> Heuristic-based score from URL structure analysis (0-1, higher = more suspicious)</li>
+                  <li><strong style="color: var(--white);">semantic_score:</strong> AI-powered semantic analysis of page content (0-1, higher = more suspicious)</li>
+                  <li><strong style="color: var(--white);">combined_score:</strong> Weighted combination of both scores (0-1, higher = more suspicious)</li>
+                  <li><strong style="color: var(--white);">safe:</strong> Final classification (True = safe, False = phishing)</li>
+                </ul>
+              </div>
+
+              <div style="margin-bottom: 32px;">
+                <h4>🔍 Key Features to Analyze</h4>
+                <p style="color: var(--muted); line-height: 1.8;">
+                  The dataset includes detailed URL features that are strong indicators of phishing:
+                </p>
+                <ul style="color: var(--muted); line-height: 1.8; padding-left: 20px;">
+                  <li><strong style="color: var(--white);">IP addresses in URLs:</strong> Often used to bypass domain reputation checks</li>
+                  <li><strong style="color: var(--white);">URL shorteners:</strong> Hide the true destination (bit.ly, tinyurl, etc.)</li>
+                  <li><strong style="color: var(--white);">Suspicious TLDs:</strong> .tk, .ml, .ga, and other commonly abused domains</li>
+                  <li><strong style="color: var(--white);">Long URLs with many parameters:</strong> Attempts to hide malicious content</li>
+                  <li><strong style="color: var(--white);">Missing HTTPS:</strong> Legitimate sites should use secure connections</li>
+                  <li><strong style="color: var(--white);">Suspicious keywords:</strong> "verify", "update", "secure", "account" in URLs</li>
+                </ul>
+              </div>
+
+              <div style="margin-bottom: 32px;">
+                <h4>❓ Frequently Asked Questions</h4>
+                <div style="margin-bottom: 20px;">
+                  <p style="color: var(--white); font-weight: 600; margin-bottom: 8px;">Q: How accurate is the PhishingNet detection system?</p>
+                  <p style="color: var(--muted); line-height: 1.6; margin-left: 20px;">
+                    PhishingNet uses a combination of URL heuristics and semantic analysis to achieve high detection rates. The system is continuously updated with new phishing patterns and techniques.
+                  </p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                  <p style="color: var(--white); font-weight: 600; margin-bottom: 8px;">Q: Can I use this dataset for commercial purposes?</p>
+                  <p style="color: var(--muted); line-height: 1.6; margin-left: 20px;">
+                    This dataset is provided under the MIT License. You're free to use it for research, commercial, or educational purposes. Please review the license terms for full details.
+                  </p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                  <p style="color: var(--white); font-weight: 600; margin-bottom: 8px;">Q: How often is the dataset updated?</p>
+                  <p style="color: var(--muted); line-height: 1.6; margin-left: 20px;">
+                    The dataset is updated in real-time as new URLs are analyzed through the PhishingNet system. Each analysis is automatically added to the dataset.
+                  </p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                  <p style="color: var(--white); font-weight: 600; margin-bottom: 8px;">Q: What should I do if I find a false positive or false negative?</p>
+                  <p style="color: var(--muted); line-height: 1.6; margin-left: 20px;">
+                    If you discover a misclassification, please report it through the PhishingNet API or contact the development team. Your feedback helps improve the detection system.
+                  </p>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 32px;">
+                <h4>💬 Share Your Insights</h4>
+                <p style="color: var(--muted); line-height: 1.8;">
+                  Have you discovered interesting patterns in the data? Found a new phishing technique? Or built something cool with this dataset? 
+                  We'd love to hear about it! Share your findings, questions, or suggestions to help improve phishing detection for everyone.
+                </p>
+                <p style="color: var(--muted); line-height: 1.8; margin-top: 12px;">
+                  <strong style="color: var(--white);">Note:</strong> This is a static discussion page. For active discussions, please use the PhishingNet GitHub repository or contact the development team.
+                </p>
+              </div>
+
+              <div style="background: rgba(255, 176, 133, 0.1); border-left: 3px solid var(--accent); padding: 16px; border-radius: 8px; margin-top: 32px;">
+                <p style="color: var(--white); margin: 0; font-weight: 600; margin-bottom: 8px;">🚀 Getting Started</p>
+                <p style="color: var(--muted); margin: 0; line-height: 1.6;">
+                  New to this dataset? Start by exploring the <strong style="color: var(--white);">Detail</strong> view to see all columns, 
+                  then switch to <strong style="color: var(--white);">Compact</strong> for a quick overview, or check the <strong style="color: var(--white);">Column</strong> 
+                  view to understand each feature. Download the dataset to perform your own analysis!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dataset-sidebar">
+          <div class="metadata-card">
+            <h4 style="color: var(--accent); margin: 0 0 16px 0; font-size: 16px;">Metadata</h4>
+            <div class="metadata-item">
+              <span class="metadata-label">Usability</span>
+              <span class="metadata-value" id="usability">8.5</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">License</span>
+              <span class="metadata-value">MIT</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">Update Frequency</span>
+              <span class="metadata-value">Real-time</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">Total Entries</span>
+              <span class="metadata-value" id="meta-total-entries">0</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">Phishing Count</span>
+              <span class="metadata-value" id="meta-phishing-count">0</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">Safe Count</span>
+              <span class="metadata-value" id="meta-safe-count">0</span>
+            </div>
+          </div>
+
+          <div class="metadata-card">
+            <h4 style="color: var(--accent); margin: 0 0 16px 0; font-size: 16px;">Tags</h4>
+            <div class="tags-container">
+              <span class="tag" data-tag="security" data-info="Focus on security-related entries. Filter entries with high security risk scores.">Security</span>
+              <span class="tag" data-tag="phishing" data-info="View phishing entries only. Shows URLs classified as phishing (safe=False).">Phishing</span>
+              <span class="tag" data-tag="url-analysis" data-info="Entries with detailed URL analysis. Focus on URL heuristics and features.">URL Analysis</span>
+              <span class="tag" data-tag="machine-learning" data-info="ML-ready dataset. Perfect for training machine learning models.">Machine Learning</span>
+              <span class="tag" data-tag="cybersecurity" data-info="Cybersecurity research data. Includes threat intelligence and risk scores.">Cybersecurity</span>
+              <span class="tag" data-tag="tabular" data-info="Structured tabular data format. Easy to import into pandas, Excel, or databases.">Tabular</span>
+            </div>
+            <div id="tag-info" class="tag-info"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer>© PhishingNet — Capstone Project</footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const backendUrl = 'http://localhost:5000';
+      
+      // Backend status check
+      const backendStatusEl = document.getElementById('sidebar-backend');
+      async function checkBackend(){
+        try{
+          const resp = await fetch(`${backendUrl}/health`, {method:'GET', mode:'cors'}).catch(()=>null);
+          backendStatusEl.textContent = (resp && resp.ok) ? 'online' : 'offline';
+        }catch(e){ backendStatusEl.textContent = 'offline' }
+      }
+      if(backendStatusEl){ checkBackend(); setInterval(checkBackend, 8000); }
+
+      // Tab switching
+      document.querySelectorAll('.dataset-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const tabName = tab.dataset.tab;
+          document.querySelectorAll('.dataset-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+          tab.classList.add('active');
+          document.getElementById(`${tabName}-tab`).style.display = 'block';
+        });
+      });
+
+      // Preview tab switching
+      // Initialize currentPreviewMode based on active tab
+      const activePreviewTab = document.querySelector('.preview-tab.active');
+      let currentPreviewMode = activePreviewTab ? activePreviewTab.dataset.preview : 'detail';
+      
+      document.querySelectorAll('.preview-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentPreviewMode = tab.dataset.preview; // Update current mode
+          // If a tag is active, reapply filter, otherwise load normal preview
+          if (activeTag) {
+            applyTagFilter(activeTag);
+          } else {
+            loadDatasetPreview();
+          }
+        });
+      });
+
+      // Load dataset info
+      async function loadDatasetInfo() {
+        try {
+          const response = await fetch(`${backendUrl}/dataset/info`, {
+            method: 'GET',
+            mode: 'cors'
+          });
+          
+          if (response.ok) {
+            const info = await response.json();
+            
+            // Update metadata
+            document.getElementById('meta-total-entries').textContent = info.total_entries || 0;
+            document.getElementById('meta-phishing-count').textContent = info.phishing_count || 0;
+            document.getElementById('meta-safe-count').textContent = info.safe_count || 0;
+            
+            // Update file size
+            const sizeKB = info.file_size > 0 ? (info.file_size / 1024).toFixed(2) : '0.00';
+            document.getElementById('file-size').textContent = `${sizeKB} KB`;
+            
+            // Update last updated time
+            if (info.last_updated) {
+              const date = new Date(info.last_updated);
+              const now = new Date();
+              const diffMs = now - date;
+              const diffMins = Math.floor(diffMs / 60000);
+              let timeText = 'JUST NOW';
+              if (diffMins < 1) timeText = 'JUST NOW';
+              else if (diffMins < 60) timeText = `${diffMins} MIN${diffMins > 1 ? 'S' : ''} AGO`;
+              else if (diffMins < 1440) timeText = `${Math.floor(diffMins / 60)} HOUR${Math.floor(diffMins / 60) > 1 ? 'S' : ''} AGO`;
+              else timeText = `${Math.floor(diffMins / 1440)} DAY${Math.floor(diffMins / 1440) > 1 ? 'S' : ''} AGO`;
+              document.getElementById('last-update-time').textContent = timeText;
+            }
+          } else {
+            throw new Error('Failed to load dataset info');
+          }
+        } catch (error) {
+          console.error('Error loading dataset info:', error);
+          document.getElementById('file-size').textContent = 'Error loading';
+        }
+      }
+
+      // Helper function to parse CSV row (handles quoted values)
+      function parseCSVRow(row) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < row.length; i++) {
+          const char = row[i];
+          if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            result.push(current.trim());
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        result.push(current.trim());
+        return result;
+      }
+
+      // Load dataset preview
+      async function loadDatasetPreview() {
+        const container = document.getElementById('data-preview-container');
+        container.innerHTML = '<div class="loading">Loading dataset preview...</div>';
+        
+        try {
+          const response = await fetch(`${backendUrl}/dataset`, {
+            method: 'GET',
+            mode: 'cors'
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to load dataset');
+          }
+          
+          const text = await response.text();
+          const lines = text.split('\n').filter(l => l.trim());
+          
+          if (lines.length === 0) {
+            container.innerHTML = '<div class="error-message">Dataset is empty. Start analyzing URLs to populate the dataset!</div>';
+            return;
+          }
+          
+          // Parse CSV headers
+          const headers = parseCSVRow(lines[0]);
+          
+          // Handle different preview modes
+          if (currentPreviewMode === 'column') {
+            // Column view - show column information
+            const columnInfo = [
+              { name: 'timestamp', type: 'datetime', description: 'When the URL was analyzed' },
+              { name: 'url', type: 'string', description: 'The analyzed URL' },
+              { name: 'url_score', type: 'float', description: 'Risk score from URL heuristics (0-1)' },
+              { name: 'semantic_score', type: 'float', description: 'Risk score from semantic analysis (0-1)' },
+              { name: 'combined_score', type: 'float', description: 'Combined risk score (0-1)' },
+              { name: 'safe', type: 'boolean', description: 'Classification: True = Safe, False = Phishing' },
+              { name: 'title', type: 'string', description: 'Page title extracted from HTML' },
+              { name: 'text_preview', type: 'string', description: 'Preview of page text content' },
+              { name: 'url_length', type: 'integer', description: 'Length of the URL in characters' },
+              { name: 'num_dots', type: 'integer', description: 'Number of dots in the URL' },
+              { name: 'has_https', type: 'boolean', description: 'Whether URL uses HTTPS (1) or HTTP (0)' },
+              { name: 'num_at', type: 'integer', description: 'Number of @ symbols in URL' },
+              { name: 'num_hyphen', type: 'integer', description: 'Number of hyphens in URL' },
+              { name: 'subdomain_len', type: 'integer', description: 'Length of subdomain' },
+              { name: 'domain_len', type: 'integer', description: 'Length of domain name' },
+              { name: 'ip_in_url', type: 'boolean', description: 'Whether URL contains IP address (1) or not (0)' }
+            ];
+            
+            let columnHTML = '<div style="display: grid; gap: 12px;">';
+            headers.forEach((header, idx) => {
+              const info = columnInfo.find(c => c.name.toLowerCase() === header.toLowerCase()) || 
+                          { name: header, type: 'unknown', description: 'No description available' };
+              columnHTML += `
+                <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; padding: 16px;">
+                  <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                    <div>
+                      <div style="color: var(--accent); font-weight: 600; font-size: 14px; margin-bottom: 4px;">${info.name}</div>
+                      <div style="color: var(--muted); font-size: 12px; font-family: monospace;">Type: ${info.type}</div>
+                    </div>
+                  </div>
+                  <div style="color: var(--white); font-size: 13px; line-height: 1.5;">${info.description}</div>
+                </div>
+              `;
+            });
+            columnHTML += '</div>';
+            container.innerHTML = columnHTML;
+            return;
+          }
+          
+          // For Detail and Compact views, parse rows
+          const rows = lines.slice(1, Math.min(21, lines.length)); // Show first 20 rows
+          
+          // Determine which columns to show based on mode
+          let columnsToShow = headers;
+          if (currentPreviewMode === 'compact') {
+            // Compact view - show only essential columns
+            const essentialCols = ['timestamp', 'url', 'url_score', 'semantic_score', 'combined_score', 'safe'];
+            columnsToShow = headers.filter(h => essentialCols.includes(h.toLowerCase()));
+          }
+          
+          // Get indices of columns to show
+          const columnIndices = columnsToShow.map(col => headers.findIndex(h => h.toLowerCase() === col.toLowerCase()));
+          
+          // Create table with scrollable container
+          let tableHTML = '<div class="table-container"><table class="data-table"><thead><tr>';
+          columnsToShow.forEach(h => {
+            tableHTML += `<th>${h.trim()}</th>`;
+          });
+          tableHTML += '</tr></thead><tbody>';
+          
+          rows.forEach(row => {
+            if (row.trim()) {
+              const cells = parseCSVRow(row);
+              tableHTML += '<tr>';
+              
+              columnIndices.forEach(colIdx => {
+                if (colIdx >= 0 && colIdx < cells.length) {
+                  const value = cells[colIdx].trim();
+                  const headerName = headers[colIdx]?.trim().toLowerCase();
+                  
+                  // Handle safe column
+                  if (headerName === 'safe' || headerName === 'phishing') {
+                    let isSafe;
+                    if (headerName === 'safe') {
+                      isSafe = value === 'True' || value === 'true' || value === '1';
+                    } else {
+                      // Old phishing column: invert logic
+                      isSafe = value === 'False' || value === 'false' || value === '0';
+                    }
+                    tableHTML += `<td style="color: ${isSafe ? '#51cf66' : '#ff6b6b'}; font-weight: 600;">${isSafe ? 'True (Safe)' : 'False (Phishing)'}</td>`;
+                  } else if (['url_score', 'semantic_score', 'combined_score'].includes(headerName)) {
+                    // Score columns - format as decimal
+                    const num = parseFloat(value);
+                    tableHTML += `<td>${!isNaN(num) ? num.toFixed(4) : value}</td>`;
+                  } else if (headerName === 'url' && currentPreviewMode === 'compact') {
+                    // Truncate URL in compact view
+                    const truncated = value.length > 50 ? value.substring(0, 47) + '...' : value;
+                    tableHTML += `<td title="${value.replace(/"/g, '&quot;')}">${truncated}</td>`;
+                  } else if (headerName === 'timestamp' && currentPreviewMode === 'compact') {
+                    // Format timestamp in compact view (show date only)
+                    const dateMatch = value.match(/(\d{4}-\d{2}-\d{2})/);
+                    const displayValue = dateMatch ? dateMatch[1] : value;
+                    tableHTML += `<td title="${value.replace(/"/g, '&quot;')}">${displayValue}</td>`;
+                  } else {
+                    // Regular column - truncate long values in compact view
+                    if (currentPreviewMode === 'compact' && value.length > 30) {
+                      const truncated = value.substring(0, 27) + '...';
+                      tableHTML += `<td title="${value.replace(/"/g, '&quot;')}">${truncated}</td>`;
+                    } else {
+                      tableHTML += `<td>${value}</td>`;
+                    }
+                  }
+                } else {
+                  tableHTML += '<td>-</td>';
+                }
+              });
+              
+              tableHTML += '</tr>';
+            }
+          });
+          
+          tableHTML += '</tbody></table></div>';
+          
+          if (lines.length > 21) {
+            tableHTML += `<div style="margin-top: 16px; color: var(--muted); font-size: 13px;">Showing first 20 of ${lines.length - 1} entries</div>`;
+          }
+          
+          container.innerHTML = tableHTML;
+        } catch (error) {
+          console.error('Error loading dataset preview:', error);
+          container.innerHTML = '<div class="error-message">Failed to load dataset preview. Make sure the backend is running.</div>';
+        }
+      }
+
+      // Download button
+      document.getElementById('download-btn').addEventListener('click', async () => {
+        const btn = document.getElementById('download-btn');
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = '⏳ Downloading...';
+        
+        try {
+          const response = await fetch(`${backendUrl}/dataset?download=true`, {
+            method: 'GET',
+            mode: 'cors'
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to download dataset');
+          }
+          
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'dataset.csv';
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          
+          setTimeout(() => {
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            btn.textContent = '✓ Downloaded!';
+            setTimeout(() => {
+              btn.textContent = originalText;
+              btn.disabled = false;
+            }, 2000);
+          }, 100);
+        } catch (error) {
+          alert('Failed to download dataset. Make sure the backend is running on http://localhost:5000');
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }
+      });
+
+      // Tag functionality
+      let activeTag = null;
+      let originalDatasetData = null;
+      
+      document.querySelectorAll('.tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+          const tagName = tag.dataset.tag;
+          const tagInfo = tag.dataset.info;
+          const infoDiv = document.getElementById('tag-info');
+          
+          // Toggle active state
+          if (activeTag === tagName) {
+            // Deselect tag
+            tag.classList.remove('active');
+            activeTag = null;
+            infoDiv.classList.remove('show');
+            infoDiv.textContent = '';
+            // Reload original dataset
+            if (originalDatasetData) {
+              loadDatasetPreview();
+            }
+          } else {
+            // Deselect previous tag
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+            // Select new tag
+            tag.classList.add('active');
+            activeTag = tagName;
+            
+            // Show tag info
+            infoDiv.textContent = tagInfo;
+            infoDiv.classList.add('show');
+            
+            // Apply filter based on tag (only if not in column view)
+            if (currentPreviewMode !== 'column') {
+              applyTagFilter(tagName);
+            } else {
+              // In column view, just show info
+              infoDiv.textContent = tagInfo + ' (Switch to Detail or Compact view to see filtered data)';
+            }
+          }
+        });
+      });
+      
+      // Apply filter based on selected tag
+      async function applyTagFilter(tagName) {
+        const container = document.getElementById('data-preview-container');
+        
+        // Store original data if not stored yet
+        if (!originalDatasetData && currentPreviewMode !== 'column') {
+          try {
+            const response = await fetch(`${backendUrl}/dataset`, {
+              method: 'GET',
+              mode: 'cors'
+            });
+            if (response.ok) {
+              originalDatasetData = await response.text();
+            }
+          } catch (e) {
+            console.error('Error storing original data:', e);
+          }
+        }
+        
+        // If column view, just show info
+        if (currentPreviewMode === 'column') {
+          return;
+        }
+        
+        try {
+          const response = await fetch(`${backendUrl}/dataset`, {
+            method: 'GET',
+            mode: 'cors'
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to load dataset');
+          }
+          
+          const text = await response.text();
+          const lines = text.split('\n').filter(l => l.trim());
+          
+          if (lines.length === 0) {
+            container.innerHTML = '<div class="error-message">Dataset is empty.</div>';
+            return;
+          }
+          
+          const headers = parseCSVRow(lines[0]);
+          let rows = lines.slice(1);
+          
+          // Apply filter based on tag
+          switch(tagName) {
+            case 'phishing':
+              // Filter phishing entries (safe=False)
+              rows = rows.filter(row => {
+                const cells = parseCSVRow(row);
+                const safeIdx = headers.findIndex(h => h.trim().toLowerCase() === 'safe');
+                if (safeIdx >= 0 && safeIdx < cells.length) {
+                  const value = cells[safeIdx].trim().toLowerCase();
+                  return value === 'false' || value === '0';
+                }
+                return false;
+              });
+              break;
+            case 'security':
+              // Filter high-risk entries (combined_score > 0.3)
+              rows = rows.filter(row => {
+                const cells = parseCSVRow(row);
+                const scoreIdx = headers.findIndex(h => h.trim().toLowerCase() === 'combined_score');
+                if (scoreIdx >= 0 && scoreIdx < cells.length) {
+                  const score = parseFloat(cells[scoreIdx]);
+                  return !isNaN(score) && score > 0.3;
+                }
+                return false;
+              });
+              break;
+            case 'url-analysis':
+              // Filter entries with URL features (url_score > 0)
+              rows = rows.filter(row => {
+                const cells = parseCSVRow(row);
+                const scoreIdx = headers.findIndex(h => h.trim().toLowerCase() === 'url_score');
+                if (scoreIdx >= 0 && scoreIdx < cells.length) {
+                  const score = parseFloat(cells[scoreIdx]);
+                  return !isNaN(score) && score > 0;
+                }
+                return false;
+              });
+              break;
+            case 'machine-learning':
+              // Show all entries (ML-ready means complete data)
+              // No filter needed, just show all
+              break;
+            case 'cybersecurity':
+              // Filter entries with high risk (combined_score > 0.25)
+              rows = rows.filter(row => {
+                const cells = parseCSVRow(row);
+                const scoreIdx = headers.findIndex(h => h.trim().toLowerCase() === 'combined_score');
+                if (scoreIdx >= 0 && scoreIdx < cells.length) {
+                  const score = parseFloat(cells[scoreIdx]);
+                  return !isNaN(score) && score > 0.25;
+                }
+                return false;
+              });
+              break;
+            case 'tabular':
+              // Show all entries (tabular is just format)
+              break;
+          }
+          
+          // Limit to first 20 rows
+          rows = rows.slice(0, 20);
+          
+          // Determine which columns to show based on mode
+          let columnsToShow = headers;
+          if (currentPreviewMode === 'compact') {
+            const essentialCols = ['timestamp', 'url', 'url_score', 'semantic_score', 'combined_score', 'safe'];
+            columnsToShow = headers.filter(h => essentialCols.includes(h.toLowerCase()));
+          }
+          
+          const columnIndices = columnsToShow.map(col => headers.findIndex(h => h.toLowerCase() === col.toLowerCase()));
+          
+          // Create table
+          let tableHTML = '<div class="table-container"><table class="data-table"><thead><tr>';
+          columnsToShow.forEach(h => {
+            tableHTML += `<th>${h.trim()}</th>`;
+          });
+          tableHTML += '</tr></thead><tbody>';
+          
+          if (rows.length === 0) {
+            tableHTML += `<tr><td colspan="${columnsToShow.length}" style="text-align: center; color: var(--muted); padding: 20px;">No entries match this filter.</td></tr>`;
+          } else {
+            rows.forEach(row => {
+              if (row.trim()) {
+                const cells = parseCSVRow(row);
+                tableHTML += '<tr>';
+                
+                columnIndices.forEach(colIdx => {
+                  if (colIdx >= 0 && colIdx < cells.length) {
+                    const value = cells[colIdx].trim();
+                    const headerName = headers[colIdx]?.trim().toLowerCase();
+                    
+                    if (headerName === 'safe' || headerName === 'phishing') {
+                      let isSafe;
+                      if (headerName === 'safe') {
+                        isSafe = value === 'True' || value === 'true' || value === '1';
+                      } else {
+                        isSafe = value === 'False' || value === 'false' || value === '0';
+                      }
+                      tableHTML += `<td style="color: ${isSafe ? '#51cf66' : '#ff6b6b'}; font-weight: 600;">${isSafe ? 'True (Safe)' : 'False (Phishing)'}</td>`;
+                    } else if (['url_score', 'semantic_score', 'combined_score'].includes(headerName)) {
+                      const num = parseFloat(value);
+                      tableHTML += `<td>${!isNaN(num) ? num.toFixed(4) : value}</td>`;
+                    } else if (headerName === 'url' && currentPreviewMode === 'compact') {
+                      const truncated = value.length > 50 ? value.substring(0, 47) + '...' : value;
+                      tableHTML += `<td title="${value.replace(/"/g, '&quot;')}">${truncated}</td>`;
+                    } else if (headerName === 'timestamp' && currentPreviewMode === 'compact') {
+                      const dateMatch = value.match(/(\d{4}-\d{2}-\d{2})/);
+                      const displayValue = dateMatch ? dateMatch[1] : value;
+                      tableHTML += `<td title="${value.replace(/"/g, '&quot;')}">${displayValue}</td>`;
+                    } else {
+                      if (currentPreviewMode === 'compact' && value.length > 30) {
+                        const truncated = value.substring(0, 27) + '...';
+                        tableHTML += `<td title="${value.replace(/"/g, '&quot;')}">${truncated}</td>`;
+                      } else {
+                        tableHTML += `<td>${value}</td>`;
+                      }
+                    }
+                  } else {
+                    tableHTML += '<td>-</td>';
+                  }
+                });
+                
+                tableHTML += '</tr>';
+              }
+            });
+          }
+          
+          tableHTML += '</tbody></table></div>';
+          
+          const totalFiltered = rows.length;
+          const totalInDataset = lines.length - 1;
+          tableHTML += `<div style="margin-top: 16px; color: var(--muted); font-size: 13px;">Showing ${totalFiltered} filtered ${totalFiltered === 1 ? 'entry' : 'entries'}${totalFiltered < totalInDataset ? ` of ${totalInDataset} total` : ''}</div>`;
+          
+          container.innerHTML = tableHTML;
+        } catch (error) {
+          console.error('Error applying tag filter:', error);
+          container.innerHTML = '<div class="error-message">Failed to apply filter. Make sure the backend is running.</div>';
+        }
+      }
+
+      // Initialize
+      loadDatasetInfo();
+      loadDatasetPreview();
+      setInterval(loadDatasetInfo, 10000); // Update every 10 seconds
+    })();
+  </script>
+</body>
+</html>
+

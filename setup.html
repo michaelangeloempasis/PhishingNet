@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PhishingNet — User Guide</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="PhishingNet setup guide - How to install and use the browser extension for phishing protection." />
+  <meta name="keywords" content="phishing extension setup, installation guide, user tutorial, browser security setup" />
+  <link rel="canonical" href="https://phishingnet.com/setup.html" />
+  
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/png" href="phishing-icon.png" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <link rel="shortcut icon" href="logo.jpg" />
+  <meta name="theme-color" content="#ffb085" />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://phishingnet.com/setup.html" />
+  <meta property="og:title" content="PhishingNet Setup Guide" />
+  <meta property="og:description" content="Step-by-step guide to install and use PhishingNet browser extension." />
+  <meta property="og:image" content="https://phishingnet.com/logo.jpg" />
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+    code {
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .step-card {
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .step-card h3 {
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
+    ul, ol {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .tip {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo"><img src="logo.jpg" alt="PhishingNet Logo"></div>
+        <div>
+          <h2>PhishingNet</h2>
+          <div class="small" style="margin-top:4px;color:var(--muted)">Capstone Project</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="sidebar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="api.html">API</a>
+        <a href="setup.html">Setup</a>
+        <a href="dataset.html">Dataset</a>
+      </nav>
+      <div class="muted">Status: local • backend: <span id="sidebar-backend">unknown</span></div>
+    </aside>
+
+    <main class="main">
+      <div class="header-row">
+        <h1 class="page-title">User Guide</h1>
+        <div class="small">How to use the PhishingNet browser extension</div>
+      </div>
+
+      <section class="section card anim-fade-up">
+        <div class="step-card">
+          <h3>Step 1: Open PhishingNet Extension</h3>
+          <p class="small">
+            After installing the PhishingNet extension, you’ll see its <b>PN icon</b> on your browser’s toolbar.
+            Click it to open the popup window. This popup is where you can start scanning websites for phishing risk.
+          </p>
+          <p class="tip">Tip: If you can’t see the PN icon, click the puzzle icon on your browser and pin it.</p>
+        </div>
+
+        <div class="step-card">
+          <h3>Step 2: Scan a Website</h3>
+          <ol class="small">
+            <li>Copy any website link you want to check.</li>
+            <li>Open the PhishingNet extension popup.</li>
+            <li>Paste the link into the provided field.</li>
+            <li>Click <b>“Scan Now”</b> to start analyzing the URL.</li>
+          </ol>
+          <p class="tip">The system will send the link to the backend for evaluation and return a result instantly.</p>
+        </div>
+
+        <div class="step-card">
+          <h3>Step 3: View Results</h3>
+          <p class="small">
+            Once the scan is complete, you’ll see one of the following results:
+          </p>
+          <ul class="small">
+            <li><b>SAFE 🟢</b> — The website is considered safe to visit.</li>
+            <li><b>PHISHING 🔴</b> — The website might be a phishing or fake page.</li>
+          </ul>
+          <p class="tip">If a site is marked as “Phishing,” it’s best not to continue or share your personal information there.</p>
+        </div>
+
+        <div class="step-card">
+          <h3>Step 4: Enable Auto-Scan (Optional)</h3>
+          <p class="small">
+            You can enable <b>Auto-Scan</b> from the extension’s settings. When this is turned on, every time you
+            copy a link, PhishingNet will automatically analyze it and show the result.
+          </p>
+          <p class="tip">A short alert sound will play when a phishing link is detected.</p>
+        </div>
+
+        <div class="step-card">
+          <h3>Step 5: Check Notifications</h3>
+          <p class="small">
+            PhishingNet will show browser notifications whenever a high-risk site is detected.
+            These alerts appear near your system tray or notification bar.
+          </p>
+          <p class="tip">Notifications include a brief message about the detected threat and safety tips.</p>
+        </div>
+
+        <div class="step-card">
+          <h3>Step 6: Stay Safe Online</h3>
+          <ul class="small">
+            <li>Always verify links before clicking or logging in.</li>
+            <li>Avoid entering passwords on unfamiliar pages.</li>
+            <li>Use PhishingNet regularly to double-check suspicious websites.</li>
+            <li>Remember: when in doubt, don’t click!</li>
+          </ul>
+          <p class="tip">PhishingNet helps protect you, but safe browsing habits are still the best defense.</p>
+        </div>
+      </section>
+
+      <footer>© PhishingNet — Capstone Project</footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const backendStatusEl=document.getElementById('sidebar-backend');
+      async function checkBackend(){
+        try{
+          const r=await fetch('http://localhost:5000/analyze',{method:'OPTIONS'}).catch(()=>null);
+          const ok=(r&&(r.ok||r.status===204));
+          backendStatusEl.textContent=ok?'online':'offline';
+        }catch(e){backendStatusEl.textContent='offline'}
+      }
+      if(backendStatusEl){checkBackend();setInterval(checkBackend,8000);}  
+
+      document.addEventListener('DOMContentLoaded',()=>{
+        const links=document.querySelectorAll('.nav a');
+        const path=window.location.pathname.split('/').pop()||'index.html';
+        links.forEach(l=>{
+          const href=l.getAttribute('href');
+          if(href===path) l.classList.add('active');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

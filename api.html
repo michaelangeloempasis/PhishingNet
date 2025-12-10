@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PhishingNet — API Reference</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="PhishingNet API documentation - Endpoints, authentication, and integration guide for developers." />
+  <meta name="keywords" content="phishing API, security API, developer documentation, REST API" />
+  <link rel="canonical" href="https://phishingnet.com/api.html" />
+  
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/png" href="phishing-icon.png" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <link rel="shortcut icon" href="logo.jpg" />
+  <meta name="theme-color" content="#ffb085" />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://phishingnet.com/api.html" />
+  <meta property="og:title" content="PhishingNet API Documentation" />
+  <meta property="og:description" content="API documentation and integration guide for PhishingNet." />
+  <meta property="og:image" content="https://phishingnet.com/logo.jpg" />
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+    code {
+      background: rgba(255,255,255,0.07);
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background: rgba(255,255,255,0.05);
+      padding: 14px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .endpoint {
+      background: rgba(255,255,255,0.02);
+      border-left: 3px solid var(--accent);
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 6px;
+    }
+    .method {
+      color: #ffb347;
+      font-weight: 700;
+    }
+    h3, h4 { color: var(--accent); }
+    .tip { color: var(--muted); font-size: 14px; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo"><img src="logo.jpg" alt="PhishingNet Logo"></div>
+        <div>
+          <h2>PhishingNet</h2>
+          <div class="small" style="margin-top:4px;color:var(--muted)">Capstone Project</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="sidebar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="api.html">API</a>
+        <a href="setup.html">Setup</a>
+        <a href="dataset.html">Dataset</a>
+      </nav>
+      <div class="muted">Status: local • backend: <span id="sidebar-backend">unknown</span></div>
+    </aside>
+
+    <main class="main">
+      <div class="header-row">
+        <h1 class="page-title">PhishingNet API Reference</h1>
+        <div class="small">Endpoints, payloads, and responses for integration</div>
+      </div>
+
+      <section class="section card anim-fade-up">
+        <h3>Overview</h3>
+        <p class="small">
+          The <b>PhishingNet API</b> provides a RESTful interface that allows clients (such as the browser extension)
+          to send URLs or web page data to the backend for phishing risk analysis using machine learning models.
+        </p>
+        <p class="tip">All endpoints return JSON responses and use standard HTTP status codes.</p>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.1s">
+        <h3>Base URL</h3>
+        <div class="endpoint">
+          <code>http://localhost:5000</code>
+        </div>
+        <p class="small">
+          The backend runs locally on port <code>5000</code> by default.  
+          You can change this in <code>app.py</code> if needed.
+        </p>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.2s">
+        <h3>Endpoint: Analyze URL</h3>
+        <div class="endpoint">
+          <span class="method">POST</span> <code>/analyze</code>
+        </div>
+
+        <h4>Request Headers</h4>
+        <ul class="small">
+          <li><code>Content-Type: application/json</code> — required</li>
+        </ul>
+
+        <h4>Request Body</h4>
+        <pre>{
+  "url": "https://example.com/login",
+  "title": "Login - Example",
+  "text": "Welcome to Example. Please log in."
+}</pre>
+
+        <h4>Response (Success)</h4>
+        <pre>{
+  "url": "https://example.com/login",
+  "url_score": 0.78,
+  "semantic_score": 0.59,
+  "score": 0.70,
+  "phishing": true
+}</pre>
+
+        <h4>Status Codes</h4>
+        <ul class="small">
+          <li><b>200 OK</b> — Successful analysis</li>
+          <li><b>400 Bad Request</b> — Missing or invalid parameters</li>
+          <li><b>500 Internal Server Error</b> — Processing or model failure</li>
+        </ul>
+
+        <p class="tip">Use this endpoint to get phishing predictions for any given URL.</p>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.3s">
+        <h3>Example: Using cURL</h3>
+        <pre>curl -X POST http://localhost:5000/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://example.com/login",
+    "title": "Login Example",
+    "text": "Welcome to Example Login"
+  }'</pre>
+
+        <h3>Example: Using JavaScript (fetch)</h3>
+        <pre>fetch("http://localhost:5000/analyze", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    url: "https://example.com/login",
+    title: "Login Example",
+    text: "Welcome to Example"
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.error(err));</pre>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.4s">
+        <h3>Response Fields</h3>
+        <ul class="small">
+          <li><b>url</b> — The URL analyzed.</li>
+          <li><b>url_score</b> — Probability score based on URL structure (0–1).</li>
+          <li><b>semantic_score</b> — Probability score from text semantics (0–1).</li>
+          <li><b>score</b> — Weighted combined score (final risk).</li>
+          <li><b>phishing</b> — Boolean verdict (<code>true</code> = phishing detected).</li>
+        </ul>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.5s">
+        <h3>Example Error Response</h3>
+        <pre>{
+  "error": "Missing URL parameter",
+  "status": 400
+}</pre>
+
+        <p class="small">If an invalid or empty payload is sent, the API will respond with a 400 error.</p>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.6s">
+        <h3>Integration Notes</h3>
+        <ul class="small">
+          <li>The API is designed for local use (browser extension ↔ backend).</li>
+          <li>For production use, deploy with HTTPS and proper CORS setup.</li>
+          <li>Supports both text and title input for semantic phishing detection.</li>
+          <li>Responses are returned in under 1 second for most URLs.</li>
+        </ul>
+      </section>
+
+      <footer>© PhishingNet — Capstone Project</footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const backendStatusEl=document.getElementById('sidebar-backend');
+      async function checkBackend(){
+        try{
+          const r=await fetch('http://localhost:5000/analyze',{method:'OPTIONS'}).catch(()=>null);
+          backendStatusEl.textContent=(r&&(r.ok||r.status===204))?'online':'offline';
+        }catch(e){backendStatusEl.textContent='offline'}
+      }
+      if(backendStatusEl){checkBackend();setInterval(checkBackend,8000);}  
+
+      document.addEventListener('DOMContentLoaded',()=>{
+        const links=document.querySelectorAll('.nav a');
+        const path=window.location.pathname.split('/').pop()||'index.html';
+        links.forEach(l=>{
+          const href=l.getAttribute('href');
+          if(href===path) l.classList.add('active');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

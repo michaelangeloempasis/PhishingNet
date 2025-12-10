@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PhishingNet — AI-Powered Phishing Detection & Browser Security</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="PhishingNet - AI-powered phishing detection browser extension. Real-time URL scanning, risk analysis, and protection against phishing attacks. Free and privacy-first." />
+  <meta name="keywords" content="phishing detection, browser security, URL scanner, phishing protection, cybersecurity, browser extension, AI security, phishing prevention" />
+  <meta name="author" content="PhishingNet Team" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://phishingnet.com/" />
+  <link rel="sitemap" type="application/xml" href="sitemap.xml" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://phishingnet.com/" />
+  <meta property="og:title" content="PhishingNet — AI-Powered Phishing Detection" />
+  <meta property="og:description" content="Real-time phishing detection browser extension. Scan URLs, get risk scores, and stay safe online." />
+  <meta property="og:image" content="https://phishingnet.com/logo.jpg" />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://phishingnet.com/" />
+  <meta property="twitter:title" content="PhishingNet — AI-Powered Phishing Detection" />
+  <meta property="twitter:description" content="Real-time phishing detection browser extension. Scan URLs, get risk scores, and stay safe online." />
+  <meta property="twitter:image" content="https://phishingnet.com/logo.jpg" />
+  
+  <!-- Favicon / Logo for Browser Tabs and Search Results -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/png" href="phishing-icon.png" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <link rel="shortcut icon" href="logo.jpg" />
+  <meta name="theme-color" content="#ffb085" />
+  
+  <!-- Structured Data for Rich Search Results (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PhishingNet",
+    "description": "AI-powered phishing detection browser extension. Real-time URL scanning, risk analysis, and protection against phishing attacks.",
+    "url": "https://phishingnet.com",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Chrome, Firefox, Edge",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://phishingnet.com/logo.jpg",
+      "width": 512,
+      "height": 512
+    },
+    "image": "https://phishingnet.com/logo.jpg",
+    "author": {
+      "@type": "Organization",
+      "name": "PhishingNet Team",
+      "url": "https://phishingnet.com"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "150"
+    },
+    "featureList": [
+      "Real-time URL scanning",
+      "AI-powered phishing detection",
+      "Browser extension",
+      "Privacy-first",
+      "Free to use"
+    ]
+  }
+  </script>
+  
+  <!-- Organization Schema for Better Brand Recognition -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "PhishingNet",
+    "url": "https://phishingnet.com",
+    "logo": "https://phishingnet.com/logo.jpg",
+    "description": "AI-powered phishing detection and browser security solution",
+    "sameAs": [
+      "https://github.com/phishingnet",
+      "https://twitter.com/phishingnet"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Support",
+      "email": "support@phishingnet.com"
+    }
+  }
+  </script>
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+  /* Welcome overlay styles */
+  .welcome-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* changed from transparent gradient to solid background */
+    background: linear-gradient(180deg, #041126 0%, #071226 80%);
+    color: var(--white);
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+  }
+  .welcome-hidden { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
+
+  .welcome-card {
+    width: 96%;
+    max-width: 560px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 36px 28px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    animation: welcome-pop 0.6s cubic-bezier(.2,.9,.33,1);
+  }
+  @keyframes welcome-pop {
+    from { transform: translateY(18px) scale(.98); opacity: 0 }
+    to   { transform: translateY(0) scale(1); opacity: 1 }
+  }
+
+  .welcome-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #041226;
+    font-size: 36px;
+    font-weight: 800;
+    overflow: hidden;
+  }
+  .welcome-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+  .welcome-card h2 {
+    margin: 6px 0 8px;
+    font-size: 26px;
+  }
+  .welcome-card p {
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
+
+  .welcome-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+  .welcome-actions .btn {
+    padding: 12px 16px;
+  }
+
+  .welcome-dismiss {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    justify-content: center;
+  }
+
+  .welcome-dismiss input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media(max-width:560px){
+    .welcome-card{padding:24px;}
+    .welcome-logo{width:72px;height:72px;font-size:28px;}
+  }
+</style>
+</head>
+<body>
+  <!-- Welcome overlay (merged into index) -->
+  <div id="welcome-overlay" class="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div class="welcome-card" role="document">
+      <div class="welcome-logo"><img src="logo.jpg" alt="PhishingNet Logo"></div>
+      <h2 id="welcome-title">Welcome to PhishingNet</h2>
+      <p>Your AI-powered phishing detection dashboard. Analyze pages, get fast risk scores, and stay safe — privacy-first.</p>
+
+      <div class="welcome-actions">
+        <button id="welcome-start" class="btn">Enter Dashboard</button>
+        <button id="welcome-learn" class="btn ghost">Learn More</button>
+      </div>
+
+      <div class="welcome-dismiss">
+        <label style="display:flex;gap:8px;align-items:center"><input id="welcome-hide" type="checkbox"> Don't show again</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main app -->
+  <div class="app" id="app-root" aria-hidden="true">
+    <aside class="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo"><img src="logo.jpg" alt="PhishingNet Logo"></div>
+        <div>
+          <h2>PhishingNet</h2>
+          <div class="small" style="margin-top:4px;color:var(--muted)">Capstone Project</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="sidebar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="api.html">API</a>
+        <a href="setup.html">Setup</a>
+        <a href="dataset.html">Dataset</a>
+      </nav>
+
+      <div class="muted">Status: local • backend: <span id="sidebar-backend">unknown</span></div>
+    </aside>
+
+    <main class="main">
+      <div class="header-row">
+        <div style="flex: 1;">
+          <h1 class="page-title">PhishingNet • Home</h1>
+          <div class="small">Project documentation & demo (local)</div>
+        </div>
+        <!-- Search Bar -->
+        <div class="search-container" style="position: relative; max-width: 400px; min-width: 300px;">
+          <input type="search" id="site-search" placeholder="Search PhishingNet..." 
+                 style="width: 100%; padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); 
+                        background: rgba(255,255,255,0.05); color: var(--white); font-size: 14px;
+                        transition: all 0.2s ease;" />
+          <div id="search-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; 
+                                          margin-top: 8px; background: rgba(10,20,40,0.95); border-radius: 8px; 
+                                          padding: 12px; max-height: 400px; overflow-y: auto; z-index: 1000;
+                                          box-shadow: 0 8px 24px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);"></div>
+        </div>
+      </div>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-left">
+          <h1 id="hero-title" class="anim-fade-up">All your pages — scanned for phishing risk in real time.</h1>
+          <p class="lead anim-fade-up" style="animation-delay:.07s">PhishingNet uses URL heuristics and semantic analysis to produce a risk score. Load the extension to run lightweight checks while browsing — privacy-first and configurable.</p>
+
+          <div class="cta-row anim-fade-up" style="animation-delay:.14s">
+            <button id="add-ext" class="btn" data-store-url="https://chromewebstore.google.com/search/PhishingNet">Add Extension</button>
+            <button id="view-doc" class="btn ghost">View Documentation</button>
+            <span class="note">This is a big help for you!</code></span>
+          </div>
+        </div>
+
+        <div class="hero-right float" aria-hidden="true">
+          <div style="text-align:center;color:var(--muted);padding:18px">
+            <div style="margin:20px auto;width:120px;height:120px;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.4);position:relative;">
+              <img src="phishing-icon.png" alt="PhishingNet Extension Icon" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;position:absolute;top:0;left:0;">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="cards" aria-hidden="false">
+        <div class="card anim-fade-up" style="animation-delay:.1s">
+          <h3>Quick scan</h3>
+          <div class="small">Open any page, click the extension icon and run a scan. View history and last analysis in the popup.</div>
+        </div>
+        <div class="card anim-fade-up" style="animation-delay:.18s">
+          <h3>Privacy</h3>
+          <div class="small">Configure the extension to send only URLs (no page text). Data collection is opt-in.</div>
+        </div>
+        <div class="card anim-fade-up" style="animation-delay:.26s">
+          <h3>Performance</h3>
+          <div class="small">LightGBM for fast URL inference; MiniLM embeddings are optional in backend.</div>
+        </div>
+      </div>
+
+      <section id="overview" class="section card anim-fade-up" style="animation-delay:.34s">
+        <h3>Overview</h3>
+        <p class="small">PhishingNet provides a browser extension + backend to analyze pages for phishing risk. The extension captures URL and optional visible text and posts to <code>/analyze</code>. Backend returns JSON with <code>score</code> and <code>phishing</code>.</p>
+      </section>
+
+      <section id="how-it-works" class="section anim-fade-up" style="animation-delay:.38s">
+        <div class="cards" aria-hidden="false">
+          <div class="card">
+            <h3>1) Capture</h3>
+            <div class="small">The extension reads the current tab URL (and, if enabled, visible text snippets) without storing personal data.</div>
+          </div>
+          <div class="card">
+            <h3>2) Analyze</h3>
+            <div class="small">Our backend evaluates lexical URL features and optional semantic signals to estimate a phishing risk score.</div>
+          </div>
+          <div class="card">
+            <h3>3) Decide</h3>
+            <div class="small">We display a clear verdict: <b>SAFE</b> or <b>PHISHING</b>, plus a score and short note to guide the user.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="why" class="section card anim-fade-up" style="animation-delay:.50s">
+        <h3>Why PhishingNet?</h3>
+        <ul class="small">
+          <li><b>Real-time protection:</b> checks run instantly while browsing.</li>
+          <li><b>Private by design:</b> you choose what leaves the browser.</li>
+          <li><b>Actionable feedback:</b> simple verdicts with supporting detail.</li>
+          <li><b>Lightweight:</b> optimized heuristics with optional deeper analysis.</li>
+        </ul>
+      </section>
+
+      <footer>© PhishingNet — Capstone Project</footer>
+    </main>
+  </div>
+
+  <!-- Install Modal -->
+  <div id="install-modal" class="install-modal" style="display:none">
+    <div class="install-backdrop"></div>
+    <div class="install-card anim-fade-up">
+      <div class="install-header">
+        <div class="install-icon">➕</div>
+        <div>
+          <div class="install-title">Add PhishingNet Extension</div>
+          <div class="small" style="margin-top:4px;color:var(--muted)">Install from the Chrome Web Store.</div>
+        </div>
+        <button id="install-close" class="install-close" aria-label="Close">✕</button>
+      </div>
+      <div class="install-content">
+        <div class="install-option">
+          <h4>Install from Store</h4>
+          <p class="small">Opens your extension listing in the Chrome Web Store (or Edge Add-ons).</p>
+          <button id="open-store" class="btn">Open Store Listing</button>
+          <div class="small" style="margin-top:6px">Tip: set the store URL on the Home button’s <code>data-store-url</code> attribute.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // Backend status & UI helpers
+      const backendStatusEl = document.getElementById('sidebar-backend');
+      async function checkBackend(){
+        try{
+          const resp = await fetch('http://localhost:5000/analyze', {method:'OPTIONS'}).catch(()=>null);
+          backendStatusEl.textContent = (resp && (resp.ok || resp.status===204)) ? 'online' : 'offline';
+        }catch(e){ backendStatusEl.textContent = 'offline' }
+      }
+      if(backendStatusEl){ checkBackend(); setInterval(checkBackend, 8000); }
+
+      // Install modal handlers
+      const addBtn = document.getElementById('add-ext');
+      const installModal = document.getElementById('install-modal');
+      const showInstall = ()=>{ installModal.style.display='block'; document.body.style.overflow='hidden'; };
+      const hideInstall = ()=>{ installModal.style.display='none'; document.body.style.overflow=''; };
+
+      // Prefer opening the store directly if a valid URL is provided; otherwise show modal
+      addBtn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const preset = addBtn.getAttribute('data-store-url');
+        const fallback = 'https://chromewebstore.google.com/search/PhishingNet';
+        const url = (preset && preset.startsWith('http')) ? preset : fallback;
+        try {
+          // Use location for higher success vs popup blockers
+          window.open(url, '_blank', 'noopener');
+        } catch(_) {
+          // Fallback to showing instructions modal
+          showInstall();
+          return;
+        }
+      });
+      document.getElementById('install-close').addEventListener('click', hideInstall);
+      installModal.querySelector('.install-backdrop').addEventListener('click', hideInstall);
+
+      // Store listing handler
+      document.getElementById('open-store').addEventListener('click', ()=> {
+        const preset = addBtn.getAttribute('data-store-url');
+        const fallback = 'https://chromewebstore.google.com/search/PhishingNet';
+        const url = (preset && preset.startsWith('http')) ? preset : fallback;
+        window.open(url,'_blank','noopener');
+      });
+
+      // nav active link highlight
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const links = document.querySelectorAll('.nav a');
+        const path = window.location.pathname.split('/').pop() || 'index.html';
+        links.forEach(link => {
+          const target = link.getAttribute('href');
+          if(target === path){ link.classList.add('active'); }
+          // ensure links always navigate
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = target;
+          });
+        });
+
+        // entrance animation class
+        document.body.classList.add('ready');
+      });
+
+      // view doc click
+      document.getElementById('view-doc').addEventListener('click', ()=>{ location.href='about.html'; });
+
+      // ------------------------
+      // WELCOME overlay logic
+      // ------------------------
+      const welcomeOverlay = document.getElementById('welcome-overlay');
+      const startBtn = document.getElementById('welcome-start');
+      const learnBtn = document.getElementById('welcome-learn');
+      const dontShowCheckbox = document.getElementById('welcome-hide');
+      const appRoot = document.getElementById('app-root');
+
+      // show or hide based on localStorage flag
+      const HIDE_KEY = 'phishingnet_hide_welcome_v1';
+      function shouldShowWelcome(){
+        try {
+          const val = localStorage.getItem(HIDE_KEY);
+          return !(val === '1');
+        } catch(e) { return true; }
+      }
+
+      function hideWelcome(withFade = true){
+        if(!welcomeOverlay) return;
+        if(withFade){
+          welcomeOverlay.classList.add('welcome-hidden');
+          setTimeout(()=> {
+            welcomeOverlay.style.display = 'none';
+            if(appRoot) appRoot.removeAttribute('aria-hidden');
+          }, 450);
+        } else {
+          welcomeOverlay.style.display = 'none';
+          if(appRoot) appRoot.removeAttribute('aria-hidden');
+        }
+      }
+
+      function showWelcome(){
+        if(welcomeOverlay){
+          welcomeOverlay.style.display = 'flex';
+          appRoot.setAttribute('aria-hidden','true');
+        }
+      }
+
+      // initialize welcome visibility
+      if(shouldShowWelcome()){
+        showWelcome();
+      } else {
+        hideWelcome(false); // hide instantly
+      }
+
+      // start button triggers fade and close
+      startBtn.addEventListener('click', ()=> {
+        if(dontShowCheckbox && dontShowCheckbox.checked){
+          try { localStorage.setItem(HIDE_KEY, '1'); } catch(e){}
+        }
+        hideWelcome(true);
+      });
+
+      // Learn more goes to about page and closes welcome
+      learnBtn.addEventListener('click', ()=> {
+        if(dontShowCheckbox && dontShowCheckbox.checked){
+          try { localStorage.setItem(HIDE_KEY, '1'); } catch(e){}
+        }
+        hideWelcome(true);
+        setTimeout(()=> window.location.href='about.html', 500);
+      });
+
+    })();
+
+    // Site Search Functionality
+    (function() {
+      const searchInput = document.getElementById('site-search');
+      const searchResults = document.getElementById('search-results');
+      if (!searchInput || !searchResults) return;
+
+      // Searchable pages and content
+      const searchIndex = [
+        { title: 'Home', url: 'Index.html', keywords: ['home', 'dashboard', 'main', 'phishingnet'] },
+        { title: 'About Us', url: 'about.html', keywords: ['about', 'team', 'mission', 'who we are'] },
+        { title: 'System Architecture', url: 'architecture.html', keywords: ['architecture', 'system', 'how it works', 'technical'] },
+        { title: 'API Documentation', url: 'api.html', keywords: ['api', 'documentation', 'endpoints', 'developer'] },
+        { title: 'Setup Guide', url: 'setup.html', keywords: ['setup', 'install', 'guide', 'tutorial', 'how to'] },
+        { title: 'Dataset', url: 'dataset.html', keywords: ['dataset', 'data', 'statistics', 'results'] }
+      ];
+
+      let searchTimeout;
+      searchInput.addEventListener('input', function(e) {
+        clearTimeout(searchTimeout);
+        const query = e.target.value.trim().toLowerCase();
+        
+        if (query.length < 2) {
+          searchResults.style.display = 'none';
+          return;
+        }
+
+        searchTimeout = setTimeout(() => {
+          const results = searchIndex.filter(page => {
+            return page.title.toLowerCase().includes(query) ||
+                   page.keywords.some(kw => kw.toLowerCase().includes(query));
+          });
+
+          if (results.length === 0) {
+            searchResults.innerHTML = '<div style="padding: 12px; color: var(--muted);">No results found</div>';
+            searchResults.style.display = 'block';
+          } else {
+            searchResults.innerHTML = results.map(page => `
+              <a href="${page.url}" style="display: block; padding: 10px; border-radius: 6px; 
+                                           color: var(--white); text-decoration: none; 
+                                           transition: background 0.2s ease; margin-bottom: 4px;
+                                           border: 1px solid transparent;"
+                 onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,0.2)';"
+                 onmouseout="this.style.background='transparent'; this.style.borderColor='transparent';">
+                <div style="font-weight: 600; margin-bottom: 4px;">${page.title}</div>
+                <div style="font-size: 12px; color: var(--muted);">${page.url}</div>
+              </a>
+            `).join('');
+            searchResults.style.display = 'block';
+          }
+        }, 200);
+      });
+
+      // Close search when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+          searchResults.style.display = 'none';
+        }
+      });
+
+      // Handle Enter key to go to first result
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const firstResult = searchResults.querySelector('a');
+          if (firstResult) {
+            window.location.href = firstResult.href;
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PhishingNet — System Architecture</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Learn about PhishingNet system architecture - How our AI-powered phishing detection works internally." />
+  <meta name="keywords" content="phishing detection architecture, system design, AI security, technical documentation" />
+  <link rel="canonical" href="https://phishingnet.com/architecture.html" />
+  
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/png" href="phishing-icon.png" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <link rel="shortcut icon" href="logo.jpg" />
+  <meta name="theme-color" content="#ffb085" />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://phishingnet.com/architecture.html" />
+  <meta property="og:title" content="PhishingNet System Architecture" />
+  <meta property="og:description" content="Learn how PhishingNet's AI-powered detection system works." />
+  <meta property="og:image" content="https://phishingnet.com/logo.jpg" />
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 30px auto;
+      text-align: center;
+    }
+    .diagram img {
+      max-width: 600px;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      margin-bottom: 10px;
+    }
+    .layer-box {
+      background: rgba(255,255,255,0.03);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border-left: 3px solid var(--accent);
+    }
+    .small ul { margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo"><img src="logo.jpg" alt="PhishingNet Logo"></div>
+        <div>
+          <h2>PhishingNet</h2>
+          <div class="small" style="margin-top:4px;color:var(--muted)">Capstone Project</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="sidebar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="api.html">API</a>
+        <a href="setup.html">Setup</a>
+        <a href="dataset.html">Dataset</a>
+      </nav>
+      <div class="muted">Status: local • backend: <span id="sidebar-backend">unknown</span></div>
+    </aside>
+
+    <main class="main">
+      <div class="header-row">
+        <h1 class="page-title">System Architecture</h1>
+        <div class="small">A detailed look at how PhishingNet works internally</div>
+      </div>
+
+      <section class="section card anim-fade-up">
+        <h3>Overview</h3>
+        <p class="small">
+          The PhishingNet architecture is composed of two major components — the <b>Browser Extension</b> and the <b>Flask-based Backend</b>.  
+          Together, they form an intelligent phishing detection system powered by a machine learning model (LightGBM + MiniLM).
+        </p>
+        
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.1s">
+        <h3>Architecture Layers</h3>
+        <div class="layer-box small">
+          <b>1. Browser Extension Layer</b>
+          <ul>
+            <li>Handles user interaction and data capture (URL, visible text, title).</li>
+            <li>Includes popup UI, service worker, and content script.</li>
+            <li>Communicates with backend via REST API calls to <code>/analyze</code>.</li>
+            <li>Stores scan history and settings in local browser storage.</li>
+          </ul>
+        </div>
+
+        <div class="layer-box small">
+          <b>2. Backend Layer (Flask API)</b>
+          <ul>
+            <li>Receives incoming analysis requests from the browser extension.</li>
+            <li>Extracts URL-based features such as domain length, number of dots, HTTPS usage, etc.</li>
+            <li>Processes optional text and title through <b>MiniLM</b> transformer for semantic understanding.</li>
+            <li>Combines features and computes phishing probability using a <b>LightGBM model</b>.</li>
+          </ul>
+        </div>
+
+        <div class="layer-box small">
+          <b>3. Machine Learning Layer</b>
+          <ul>
+            <li><b>LightGBM Model:</b> Trained on large sets of phishing and legitimate URLs.</li>
+            <li><b>MiniLM Embedding:</b> Converts webpage text into numerical representations for semantic risk analysis.</li>
+            <li>Final score combines URL-based and semantic-based predictions.</li>
+          </ul>
+        </div>
+
+        <div class="layer-box small">
+          <b>4. Storage Layer</b>
+          <ul>
+            <li>Uses <b>Chrome Local Storage</b> to store recent scan history, configurations, and user preferences.</li>
+            <li>Ensures privacy — no data leaves the user’s local machine.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.2s">
+        <h3>Data Flow Process</h3>
+        <ol class="small">
+          <li>The user activates the PhishingNet extension and clicks <b>“Scan Now.”</b></li>
+          <li>The extension collects the <code>URL</code>, page title, and text (if allowed).</li>
+          <li>The data is sent to the backend endpoint <code>/analyze</code>.</li>
+          <li>The backend processes the input using LightGBM + MiniLM models.</li>
+          <li>The backend returns a phishing risk score and verdict (<b>SAFE</b> / <b>PHISHING</b>).</li>
+          <li>The extension displays the result and plays a notification sound if phishing is detected.</li>
+        </ol>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.3s">
+        <h3>Key Advantages</h3>
+        <ul class="small">
+          <li><b>Lightweight:</b> Minimal impact on browser performance.</li>
+          <li><b>Accurate:</b> Combines heuristic and ML-based detection for improved accuracy.</li>
+          <li><b>Private:</b> All analysis is done locally; no external servers involved.</li>
+          <li><b>Real-time Detection:</b> Scans and displays results instantly.</li>
+        </ul>
+      </section>
+
+      <section class="section card anim-fade-up" style="animation-delay:.4s">
+        <h3>System Diagram (Text Version)</h3>
+        <pre>
+[ User Browser ]
+     │
+     ▼
+[ PhishingNet Extension ]
+     │  Sends {url, title, text}
+     ▼
+[ Flask Backend / Analyze API ]
+     │  Extracts URL & Text Features
+     ▼
+[ ML Models: LightGBM + MiniLM ]
+     │  Generates Risk Score
+     ▼
+[ Response Sent Back ]
+     │
+     ▼
+[ UI Verdict: SAFE / PHISHING ]
+        </pre>
+      </section>
+
+      <footer>© PhishingNet — Capstone Project</footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const backendStatusEl=document.getElementById('sidebar-backend');
+      async function checkBackend(){
+        try{
+          const r=await fetch('http://localhost:5000/analyze',{method:'OPTIONS'}).catch(()=>null);
+          backendStatusEl.textContent=(r&&(r.ok||r.status===204))?'online':'offline';
+        }catch(e){backendStatusEl.textContent='offline'}
+      }
+      if(backendStatusEl){checkBackend();setInterval(checkBackend,8000);}  
+      document.addEventListener('DOMContentLoaded',()=>{
+        const links=document.querySelectorAll('.nav a');
+        const path=window.location.pathname.split('/').pop()||'index.html';
+        links.forEach(l=>{
+          const href=l.getAttribute('href');
+          if(href===path) l.classList.add('active');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

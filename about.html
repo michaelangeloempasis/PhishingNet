@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PhishingNet — About Us</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Learn about PhishingNet - Our mission to combat phishing attacks, team members, and project background." />
+  <meta name="keywords" content="phishing detection, cybersecurity team, about phishingnet, security project" />
+  <link rel="canonical" href="https://phishingnet.com/about.html" />
+  
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/png" href="phishing-icon.png" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <link rel="shortcut icon" href="logo.jpg" />
+  <meta name="theme-color" content="#ffb085" />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://phishingnet.com/about.html" />
+  <meta property="og:title" content="About PhishingNet" />
+  <meta property="og:description" content="Learn about PhishingNet - Our mission to combat phishing attacks." />
+  <meta property="og:image" content="https://phishingnet.com/logo.jpg" />
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .card h3 { color: var(--accent); }
+    .mission-box {
+      background: rgba(255,255,255,0.03);
+      border-left: 3px solid var(--accent);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    /* Team section */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    @media(max-width: 980px){ .team-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media(max-width: 640px){ .team-grid { grid-template-columns: repeat(2, 1fr); } }
+    .member-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .member-avatar {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      margin: 6px auto 10px auto;
+      background-size: cover;
+      background-position: center;
+      background-color: #0b1730;
+      border: 3px solid rgba(255,255,255,0.08);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+    .member-name { font-weight: 800; margin-top: 6px; }
+    .member-role { color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo"><img src="logo.jpg" alt="PhishingNet Logo"></div>
+        <div>
+          <h2>PhishingNet</h2>
+          <div class="small" style="margin-top:4px;color:var(--muted)">Capstone Project</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="sidebar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="api.html">API</a>
+        <a href="setup.html">Setup</a>
+        <a href="dataset.html">Dataset</a>
+      </nav>
+      <div class="muted">Status: local • backend: <span id="sidebar-backend">unknown</span></div>
+    </aside>
+
+    <main class="main">
+      <div class="header-row">
+        <h1 class="page-title">About PhishingNet</h1>
+        <div class="small">Project background, objectives, and development team</div>
+      </div>
+
+      <!-- Mission -->
+      <section class="section card anim-fade-up">
+        <h3>Our Mission</h3>
+        <div class="mission-box small">
+          PhishingNet was created to combat the growing issue of online phishing attacks by providing users
+          with an intelligent, real-time browser protection tool.  
+          The system aims to help individuals recognize and avoid fraudulent websites that attempt to steal
+          sensitive information such as passwords, banking details, and personal data.
+        </div>
+      </section>
+
+      <!-- Background -->
+      <section class="section card anim-fade-up" style="animation-delay:.1s">
+        <h3>Background</h3>
+        <p class="small">
+          Phishing has become one of the most common forms of cybercrime, targeting unsuspecting users through
+          deceptive links and fake login pages. Many victims fall for these scams due to a lack of awareness and
+          poor detection tools.  
+          PhishingNet was developed as a capstone project to address this concern by integrating
+          <b>machine learning</b> and <b>semantic text analysis</b> to detect malicious websites instantly
+          through a simple browser extension.
+        </p>
+      </section>
+
+      <!-- Objectives -->
+      <section class="section card anim-fade-up" style="animation-delay:.2s">
+        <h3>Objectives</h3>
+        <ul class="small">
+          <li>To design and develop a browser-based phishing detection system using machine learning.</li>
+          <li>To analyze URLs and webpage content to classify whether they are safe or phishing.</li>
+          <li>To notify users in real time whenever a potential phishing attempt is detected.</li>
+          <li>To promote cybersecurity awareness among internet users through visual risk indicators.</li>
+        </ul>
+      </section>
+
+      <!-- System Description -->
+      <section class="section card anim-fade-up" style="animation-delay:.3s">
+        <h3>How It Works</h3>
+        <p class="small">
+          PhishingNet operates through two main components: a <b>browser extension</b> and a
+          <b>Flask-based backend server</b>.  
+          The extension monitors user activity, captures URLs or visible text, and sends them to the backend API.
+          The backend evaluates these inputs using a trained <b>LightGBM model</b> and a
+          <b>MiniLM semantic model</b> to generate a phishing probability score.
+        </p>
+        <ul class="small">
+          <li>The extension displays a verdict (<b>SAFE</b> or <b>PHISHING</b>) directly in the browser.</li>
+          <li>Notifications and audio alerts are triggered when phishing risk is detected.</li>
+          <li>All scanning is performed locally to ensure user privacy.</li>
+        </ul>
+      </section>
+
+      <!-- Scope -->
+      <section class="section card anim-fade-up" style="animation-delay:.4s">
+        <h3>Scope and Limitations</h3>
+        <ul class="small">
+          <li>The system currently supports Google Chrome and Microsoft Edge browsers.</li>
+          <li>Detection focuses on URLs, page titles, and visible text content.</li>
+          <li>The backend must be running locally for the extension to function.</li>
+          <li>Future work includes cloud deployment and expanded dataset training for improved accuracy.</li>
+        </ul>
+      </section>
+
+      <!-- Benefits -->
+      <section class="section card anim-fade-up" style="animation-delay:.5s">
+        <h3>Beneficiaries</h3>
+        <ul class="small">
+          <li><b>General Internet Users:</b> gain real-time protection from phishing links.</li>
+          <li><b>Educational Institutions:</b> can use the system as a cybersecurity awareness tool.</li>
+          <li><b>Developers and Researchers:</b> can extend the open API for phishing detection studies.</li>
+        </ul>
+      </section>
+
+      <!-- Technologies -->
+      <section class="section card anim-fade-up" style="animation-delay:.6s">
+        <h3>Technologies Used</h3>
+        <ul class="small">
+          <li><b>Frontend:</b> HTML, CSS (Bootstrap-like custom style), JavaScript</li>
+          <li><b>Backend:</b> Python Flask API</li>
+          <li><b>Machine Learning Models:</b> LightGBM (URL feature-based), MiniLM (semantic text embeddings)</li>
+          <li><b>Tools:</b> Visual Studio Code, Chrome Developer Tools, Jupyter Notebook</li>
+        </ul>
+      </section>
+
+      <!-- Team -->
+      <section id="team" class="section card anim-fade-up" style="animation-delay:.7s">
+        <h3>The Team Behind PhishingNet</h3>
+        <div class="team-grid" aria-hidden="false">
+          <div class="member-card">
+            <div class="member-avatar" style="background-image:url('images/team/omar.jpg')" aria-label="Photo of Mapandi, Omar Philip"></div>
+            <div class="member-name">Mapandi, Omar Philip</div>
+            <div class="member-role">Lead Developer</div>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background-image:url('images/team/juhiver.jpg')" aria-label="Photo of Taurac, Juhiver"></div>
+            <div class="member-name">Taurac, Juhiver</div>
+            <div class="member-role">ML Engineer</div>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background-image:url('images/team/michael.jpg')" aria-label="Photo of Empasis, Michael"></div>
+            <div class="member-name">Empasis, Michael</div>
+            <div class="member-role">Frontend & Integration</div>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background-image:url('images/team/christian.jpg')" aria-label="Photo of Cepriano, Christian Jude"></div>
+            <div class="member-name">Cepriano, Christian Jude</div>
+            <div class="member-role">Tester & Documentation</div>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background-image:url('images/team/joseph.jpg')" aria-label="Photo of Prieto, Joseph Gerald"></div>
+            <div class="member-name">Prieto, Joseph Gerald</div>
+            <div class="member-role">Research & Evaluation</div>
+          </div>
+        </div>
+      </section>
+
+      <footer>© PhishingNet — Capstone Project</footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const backendStatusEl=document.getElementById('sidebar-backend');
+      async function checkBackend(){
+        try{
+          const r=await fetch('http://localhost:5000/analyze',{method:'OPTIONS'}).catch(()=>null);
+          backendStatusEl.textContent=(r&&(r.ok||r.status===204))?'online':'offline';
+        }catch(e){backendStatusEl.textContent='offline'}
+      }
+      if(backendStatusEl){checkBackend();setInterval(checkBackend,8000);}  
+
+      document.addEventListener('DOMContentLoaded',()=>{
+        const links=document.querySelectorAll('.nav a');
+        const path=window.location.pathname.split('/').pop()||'index.html';
+        links.forEach(l=>{
+          const href=l.getAttribute('href');
+          if(href===path) l.classList.add('active');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
