@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>PhishingNet</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <style>
+      /* Warning animations scoped to phishing modal */
+      #phish-modal[style*="display:block"] .modal-backdrop {
+        animation: backdropFade 300ms ease both;
+      }
+
+      #phish-modal[style*="display:block"] .modal-card {
+        animation: pulseGlow 1.3s ease-in-out infinite, warningShake 3s ease-in-out infinite;
+      }
+
+      #phish-modal .modal-icon {
+        animation: iconPulse 1s ease-in-out infinite;
+      }
+
+      #phish-modal .modal-title {
+        animation: titleFlash 1.2s ease-in-out infinite;
+      }
+
+      @keyframes backdropFade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @keyframes pulseGlow {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.45); }
+        50% { box-shadow: 0 0 24px 6px rgba(220, 38, 38, 0.65); }
+      }
+
+      @keyframes warningShake {
+        0%, 90%, 100% { transform: translateX(0); }
+        92% { transform: translateX(-3px); }
+        94% { transform: translateX(3px); }
+        96% { transform: translateX(-2px); }
+        98% { transform: translateX(2px); }
+      }
+
+      @keyframes iconPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+      }
+
+      @keyframes titleFlash {
+        0%, 100% { color: #ef4444; }
+        50% { color: #dc2626; }
+      }
+    </style>
+  </head>
+  <body class="light">
+    <div class="app">
+      <div class="bg-decor"></div>
+      <header class="topbar">
+        <div class="brand">
+          <span class="badge success"></span>
+          <span>PhishingNet</span>
+        </div>
+        <nav class="nav">
+          <button id="nav-home" class="nav-btn active">Home</button>
+          <button id="nav-history" class="nav-btn">History</button>
+          <button id="nav-settings" class="nav-btn">Settings</button>
+        </nav>
+      </header>
+
+      <main>
+        <!-- Home Card -->
+        <section id="view-home" class="card view">
+          <div class="status-panel">
+            <div id="big-status" class="state safe">SAFE</div>
+          </div>
+          <div class="field">
+            <label for="manual-url">Copy the URL Address and paste it here:</label>
+            <input id="manual-url" type="url" placeholder="https://example.com/login" />
+          </div>
+          <button id="manual-scan" class="btn primary">Scan Now</button>
+          <div id="last-scanned" class="muted">Last scanned: —</div>
+          <div id="last-auto-scan" class="auto-muted">Last auto-scan: —</div>
+        </section>
+
+        <!-- Results Card -->
+        <section id="view-results" class="card view" style="display:none">
+          <h3>Scan Results</h3>
+          <div class="field">
+            <label>URL Address</label>
+            <div id="result-url" class="input-like"></div>
+          </div>
+          <div class="field inline">
+            <div>
+              <label>Content Analysis</label>
+              <div class="pill">
+                <span class="pill-key" id="pill-label">Safety</span>
+                <span id="result-percent" class="pill-val">—%</span>
+              </div>
+              <div id="result-risk" class="pill" style="margin-top: 6px; display: none;">
+                <span class="pill-key">Risk</span>
+                <span id="result-risk-percent" class="pill-val" style="color: var(--red);">—%</span>
+              </div>
+              <div id="result-note" class="muted small">Safe content</div>
+              <div id="result-reasons" class="reasons-list" style="display:none; margin-top: 8px;"></div>
+            </div>
+          </div>
+          <div id="final-state" class="btn state-btn safe">SAFE</div>
+        </section>
+
+        <!-- History Card -->
+        <section id="view-history" class="card view" style="display:none">
+          <h3>History</h3>
+          <ul id="history" class="history-list"></ul>
+        </section>
+
+        <!-- Settings Card -->
+        <section id="view-settings" class="card view" style="display:none">
+          <h3>Settings</h3>
+          <div class="toggle-row">
+            <div>Auto-scan</div>
+            <label class="switch">
+              <input type="checkbox" id="auto-scan-clipboard" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div>Notifications</div>
+            <label class="switch">
+              <input type="checkbox" id="notif-enabled" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div>Notify on phishing only</div>
+            <label class="switch">
+              <input type="checkbox" id="notif-phishing-only" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div>Notification sound</div>
+            <label class="switch">
+              <input type="checkbox" id="notif-sound" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <button id="back-home" class="btn">Back</button>
+        </section>
+      </main>
+    </div>
+
+    <!-- Phishing Warning Modal -->
+    <div id="phish-modal" style="display:none">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card">
+        <div class="modal-icon">!</div>
+        <div class="modal-title">Becareful Phishing Detected!</div>
+        <div class="modal-text small">This link is suspected of phishing. Proceed with caution.</div>
+        <div class="modal-actions">
+          <button id="phish-back" class="btn">Go Back</button>
+          <button id="phish-proceed" class="btn primary">Proceed Anyway</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-toast" class="popup-toast" style="display:none"></div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
